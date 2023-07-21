@@ -56,7 +56,7 @@ def queries_by_words_distr(queries):
 # в словарь ```{'2018-01-01': {'yandex': {'cpc': 100}}}```
 def list_to_dict(input_list):
     if len(input_list) < 2:
-        raise 'Для создания словаря из списка в нем должно быть минимум 2 элемента'
+        raise BaseException('Для создания словаря из списка в нем должно быть минимум 2 элемента')
 
     dict_from_list = {input_list[-2]: input_list[-1]}
     for list_item in reversed(input_list[:-2]):
@@ -84,4 +84,3 @@ if __name__ == '__main__':
 
     input_list = ['2018-01-01', 'yandex', 'cpc', 100]
     print(list_to_dict(input_list))
-	

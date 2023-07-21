@@ -57,3 +57,39 @@ class TestUniqueIds:
     def test_with_no_dict(self, ids, expected):
         result = get_unique_ids(ids)
         assert result == expected
+
+
+class TestListToDict:
+    @pytest.mark.parametrize(
+        'input_list,expected', [
+            (['2018-01-01', 'yandex', 'cpc', 100], 
+            {'2018-01-01': {'yandex': {'cpc': 100}}}),
+            (['yandex', 'cpc', 100], 
+            {'yandex': {'cpc': 100}}),
+            (['2018-01-01', 'yandex', 'cpc'], 
+            {'2018-01-01': {'yandex': 'cpc'}})
+        ]
+    )
+    def test_correct_data(self, input_list, expected):
+        result = list_to_dict(input_list)
+        assert result == expected
+    
+    @pytest.mark.xfail
+    @pytest.mark.parametrize(
+        'input_list,expected', [
+            (['2018-01-01', 'yandex', 'cpc', 100],
+            ['2018-01-01', {'yandex': {'cpc': 100}}]),
+            (['yandex', 'cpc', 100], 
+            {'cpc': 100}),
+            (['2018-01-01', 'yandex', 'cpc', 100], 
+            {'2018-01-01': {'yandex': 'cpc'}})
+        ]
+    )
+    def test_wrong_data(self, input_list, expected):
+        result = list_to_dict(input_list)
+        assert result == expected
+    
+    @pytest.mark.xfail
+    def test_one_element_list(self):
+        assert list_to_dict(['some text'])
+        
