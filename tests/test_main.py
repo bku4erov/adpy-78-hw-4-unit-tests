@@ -59,6 +59,44 @@ class TestUniqueIds:
         assert result == expected
 
 
+class TestQueriesDistr:
+    @pytest.mark.parametrize(
+        'queries, expected',[
+            ([
+            'смотреть сериалы онлайн',
+            'новости спорта',
+            'афиша кино',
+            'курс доллара',
+            'сериалы этим летом',
+            'курс по питону',
+            'сериалы про спорт'
+            ], [(2, 43), (3, 57)]),
+            (['two words'], [(2, 100)])
+        ]
+    )
+    def test_correct_data(self, queries, expected):
+        result = queries_by_words_distr(queries)
+        assert result == expected
+
+    @pytest.mark.xfail
+    @pytest.mark.parametrize(
+        'queries, expected',[
+            ([
+            'смотреть сериалы онлайн',
+            'новости спорта',
+            'афиша кино',
+            'курс доллара',
+            'сериалы этим летом',
+            'курс по питону',
+            'сериалы про спорт'
+            ], [(3, 57), (2, 43)]),
+            (['two words'], [(2, 50)])
+        ]
+    )
+    def test_wrong_data(self, queries, expected):
+        result = queries_by_words_distr(queries)
+        assert result == expected
+
 class TestListToDict:
     @pytest.mark.parametrize(
         'input_list,expected', [
